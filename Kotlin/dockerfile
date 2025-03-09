@@ -1,0 +1,21 @@
+FROM ubuntu:24.04
+
+RUN apt update && apt install -y \
+    openjdk-8-jdk \
+    curl \
+    unzip
+
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
+
+RUN curl -sSLO https://github.com/JetBrains/kotlin/releases/download/v1.9.22/kotlin-compiler-1.9.22.zip \
+    && unzip kotlin-compiler-1.9.22.zip -d /opt/kotlin \
+    && rm kotlin-compiler-1.9.22.zip
+
+ENV PATH="/opt/kotlin/kotlinc/bin:$PATH"
+
+RUN java -version && kotlinc -version
+
+WORKDIR /app
+
+CMD ["/bin/bash", "java --version"]
