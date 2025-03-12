@@ -3,19 +3,31 @@ FROM ubuntu:24.04
 RUN apt update && apt install -y \
     openjdk-8-jdk \
     curl \
-    unzip
+    unzip \
+    wget
 
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
+# Instalacja Kotlina
 RUN curl -sSLO https://github.com/JetBrains/kotlin/releases/download/v1.9.22/kotlin-compiler-1.9.22.zip \
     && unzip kotlin-compiler-1.9.22.zip -d /opt/kotlin \
     && rm kotlin-compiler-1.9.22.zip
 
 ENV PATH="/opt/kotlin/kotlinc/bin:$PATH"
 
-RUN java -version && kotlinc -version
+# Instalacja Gradle
+RUN wget -q https://services.gradle.org/distributions/gradle-8.7-bin.zip -P /tmp \
+    && unzip -d /opt /tmp/gradle-8.7-bin.zip \
+    && rm /tmp/gradle-8.7-bin.zip
+
+ENV GRADLE_HOME=/opt/gradle-8.7
+ENV PATH="$GRADLE_HOME/bin:$PATH"
 
 WORKDIR /app
 
-CMD ["/bin/bash", "java --version"]
+COPY . /app
+
+RUN java -version && kotlinc -version && gradle --version
+
+CMD ["gradle", "run"]
