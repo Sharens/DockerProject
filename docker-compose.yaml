@@ -1,0 +1,11 @@
+services:
+  kotlin-app:
+    container_name: "kotlin-gradle-app"
+    build:
+      context: ./Kotlin
+      dockerfile: dockerfile
+  python-app:
+    container_name: "python-app"
+    build:
+      context: ./Python
+      dockerfile: dockerfile

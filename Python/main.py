@@ -1,1 +1,1 @@
-print("tururu wonsz rzeczny jest niebezpieczny")
+print("#### APLIKACJA PYTHONOWA DZIAŁA ###")
